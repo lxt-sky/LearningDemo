@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundProgressView">
+        <attr name="mBorderWidth" format="dimension"/>
+        <attr name="mBorderColor" format="color"/>
+        <attr name="mRadiusColor" format="color"/>
+        <attr name="mArcColor" format="color"/>
+        <attr name="mTextColor" format="color"/>
+        <attr name="mTextSize" format="dimension"/>
+    </declare-styleable>
+</resources>
