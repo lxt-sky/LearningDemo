@@ -18,7 +18,7 @@
 
     <com.sanmen.bluesky.learningdemo.widget.RoundProgressView
         android:id="@+id/rpvProgress"
-        android:background="@color/colorAccent"
+        android:background="#7a7a7d"
         android:layout_width="140dp"
         android:layout_height="120dp"
         android:layout_marginEnd="8dp"
@@ -26,10 +26,10 @@
         android:layout_marginRight="8dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="50dp"
-        app:mBorderColor="@color/colorPrimary"
-        app:mArcColor="@android:color/holo_green_light"
-        app:mTextColor="@android:color/holo_blue_bright"
-        app:mTextSize="20dp"
+        app:mBorderColor="#009EDB"
+        app:mArcColor="#00ffff"
+        app:mTextColor="#009FDE"
+        app:mTextSize="24sp"
         app:mBorderWidth="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

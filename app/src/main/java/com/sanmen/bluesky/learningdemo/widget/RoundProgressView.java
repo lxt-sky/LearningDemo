@@ -1,14 +1,18 @@
 package com.sanmen.bluesky.learningdemo.widget;
 
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.LinearInterpolator;
 
 import com.sanmen.bluesky.learningdemo.R;
 
@@ -39,13 +43,13 @@ public class RoundProgressView extends View {
      */
     private int mTextColor;
     /**
-     * 中间文字
-     */
-    private String mCenterText = "0S";
-    /**
      * 文字大小
      */
     private float mTextSize;
+    /**
+     * 文字单位
+     */
+    private String mBaseUnit="S";
     /**
      * 总进度
      */
@@ -67,6 +71,8 @@ public class RoundProgressView extends View {
 
     private static final int DEFAULT_TEXT_SIZE = 20;
 
+    private ValueAnimator animator;
+
 
     public RoundProgressView(Context context) {
         this(context,null);
@@ -81,6 +87,7 @@ public class RoundProgressView extends View {
 
         initAttrs(context,attrs);
         initVariable();
+
     }
 
     private void initAttrs(Context context, AttributeSet attrs) {
@@ -91,7 +98,7 @@ public class RoundProgressView extends View {
         mArcColor = typedArray.getColor(R.styleable.RoundProgressView_mArcColor,Color.parseColor("#d50f09"));
         mTextColor = typedArray.getColor(R.styleable.RoundProgressView_mTextColor,Color.parseColor("#d50f09"));
         mTextSize = typedArray.getDimensionPixelSize(R.styleable.RoundProgressView_mTextSize,dip2px(DEFAULT_TEXT_SIZE));
-
+        typedArray.recycle();
     }
 
     private void initVariable() {
@@ -138,6 +145,14 @@ public class RoundProgressView extends View {
         //计算中心点坐标
         float centerX = viewWidth/2.0f;
         float centerY = viewHeight/2.0f;
+        //中间文字文本
+        String centerText=mProgress+mBaseUnit;
+        //计算文字绘制X坐标
+        int textX= toCalculateTextX(mCenterTextPaint,centerText);
+        //计算文本绘制高度
+        Paint.FontMetricsInt fm = mCenterTextPaint.getFontMetricsInt();
+        //计算文本绘制Y坐标
+        int textY =(getHeight()-(fm.descent-fm.ascent))/2-fm.ascent;
 
         //矩阵
         RectF oval = new RectF();
@@ -151,41 +166,128 @@ public class RoundProgressView extends View {
         //内实心圆
         canvas.drawCircle(centerX,centerY,mRingRadius-mBorderWidth/2.0f,mRadiusPaint);
 
-        //计算文字绘制X坐标
-        int textX= toCalculateTextX(mCenterTextPaint,mCenterText);
-        //计算文本绘制高度
-        Paint.FontMetricsInt fm = mCenterTextPaint.getFontMetricsInt();
-        int textY =(getHeight()-(fm.descent-fm.ascent))/2-fm.ascent;
         if(mProgress>0){
             //圆弧
             canvas.drawArc(oval,270f,((float) mProgress/mTotalProgress)*360f,false,mArcSPaint);
-            mCenterText=mProgress+"S";
-
-            textX= toCalculateTextX(mCenterTextPaint,mCenterText);
         }
         //中间文字
-        canvas.drawText(mCenterText,textX,textY,mCenterTextPaint);
+        canvas.drawText(centerText,textX,textY,mCenterTextPaint);
     }
 
-
+    /**
+     * 以动画的形式展示进度
+     * @param progress
+     */
+    private void startAnim(int progress) {
+        animator = ObjectAnimator.ofInt(0,progress);
+        animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator valueAnimator) {
+                RoundProgressView.this.mProgress = (int) valueAnimator.getAnimatedValue();
+                postInvalidate();
+            }
+        });
+        //设置延迟开始
+        animator.setStartDelay(500);
+        animator.setDuration(1000);
+        animator.setInterpolator(new LinearInterpolator());
+        animator.start();
+    }
 
     /**
-     * 设置圆弧线帽样式
+     * 设置圆弧线帽样式,无效
      * @param cap
      */
     public void setStokeCap(Paint.Cap cap){
         mRadiusPaint.setStrokeCap(cap);
-
     }
 
     /**
      * 设置进度
-     * @param progress
+     * @param progress 进度值
+     * @param openAnim 是否开启动画
      */
-    public void setProgress(int progress) {
-        mProgress = progress;
-        //重新绘制
-        postInvalidate();
+    public void setProgress(int progress,boolean openAnim) {
+
+        if (openAnim){
+            startAnim(progress);
+        }else {
+            this.mProgress = progress;
+            //重新绘制
+            postInvalidate();
+        }
+    }
+
+    /**
+     * 设置最大进度
+     * @param maxProgress
+     */
+    public void setMaxProgress(int maxProgress){
+        this.mTotalProgress = maxProgress;
+//        invalidate();
+    }
+
+    /**
+     * 设置中间文字显示单位,默认为
+     * @param baseUnit
+     */
+    public void setBaseUnit(String baseUnit){
+        this.mBaseUnit = baseUnit;
+    }
+
+    /**
+     * 设置文字大小
+     * @param size
+     */
+    public void setTextSize(int size){
+        this.mTextSize = dip2px(size);
+    }
+
+    /**
+     * 设置描边宽度
+     * @param width
+     */
+    public void setBorderWidth(int width){
+        this.mBorderWidth = dip2px(width);
+    }
+
+    /**
+     * 设置外圆环颜色
+     * @param color
+     */
+    public void setBorderColor(@ColorInt int color){
+        this.mBorderColor = color;
+    }
+
+    /**
+     * 设置内圆颜色
+     * @param color
+     */
+    public void setRadiusColor(@ColorInt int color){
+        this.mRadiusColor = color;
+    }
+
+    /**
+     * 设置文字颜色
+     * @param color
+     */
+    public void setTextColor(@ColorInt int color){
+        this.mTextColor = color;
+    }
+
+    /**
+     * 设置圆弧颜色
+     * @param color
+     */
+    public void setArcColor(@ColorInt int color){
+        this.mArcColor = color;
+    }
+
+    /**
+     * 更新
+     */
+    public void refresh(){
+        initVariable();
     }
 
     /**
@@ -212,12 +314,4 @@ public class RoundProgressView extends View {
         return (int) (dipVal*scale+0.5f);
     }
 
-
-    private class ProgressRunable implements Runnable{
-
-        @Override
-        public void run() {
-
-        }
-    }
 }
