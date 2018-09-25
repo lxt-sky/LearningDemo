@@ -47,9 +47,15 @@ public class RoundProgressView extends View {
      */
     private float mTextSize;
     /**
+     * 进度起始点位置
+     */
+    private float mStartPosition;
+
+    /**
      * 文字单位
      */
     private String mBaseUnit="S";
+
     /**
      * 总进度
      */
@@ -70,6 +76,14 @@ public class RoundProgressView extends View {
     private static final int DEFAULT_BORDER_WIDTH = 10;
 
     private static final int DEFAULT_TEXT_SIZE = 20;
+
+    public static final float LEFT = 180f;
+
+    public static final float TOP = -90f;
+
+    public static final float RIGHT = 0f;
+
+    public static final float BOTTOM = 90f;
 
     private ValueAnimator animator;
 
@@ -98,6 +112,7 @@ public class RoundProgressView extends View {
         mArcColor = typedArray.getColor(R.styleable.RoundProgressView_mArcColor,Color.parseColor("#d50f09"));
         mTextColor = typedArray.getColor(R.styleable.RoundProgressView_mTextColor,Color.parseColor("#d50f09"));
         mTextSize = typedArray.getDimensionPixelSize(R.styleable.RoundProgressView_mTextSize,dip2px(DEFAULT_TEXT_SIZE));
+        mStartPosition =  typedArray.getFloat(R.styleable.RoundProgressView_mStartPosition,-90f);
         typedArray.recycle();
     }
 
@@ -168,7 +183,7 @@ public class RoundProgressView extends View {
 
         if(mProgress>0){
             //圆弧
-            canvas.drawArc(oval,270f,((float) mProgress/mTotalProgress)*360f,false,mArcSPaint);
+            canvas.drawArc(oval,mStartPosition,((float) mProgress/mTotalProgress)*360f,false,mArcSPaint);
         }
         //中间文字
         canvas.drawText(centerText,textX,textY,mCenterTextPaint);
@@ -281,6 +296,14 @@ public class RoundProgressView extends View {
      */
     public void setArcColor(@ColorInt int color){
         this.mArcColor = color;
+    }
+
+    /**
+     * 设置进度起始点位置
+     * @param position
+     */
+    public void setStartPosition(float position){
+        this.mStartPosition = position;
     }
 
     /**

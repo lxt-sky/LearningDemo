@@ -37,6 +37,7 @@ public class MainActivity extends AppCompatActivity {
 //        roundProgressView.setTextSize(16);
 //        roundProgressView.setBorderColor(Color.BLUE);
 //        roundProgressView.refresh();
+//        roundProgressView.setStartPosition(RoundProgressView.LEFT);
 
     }
 }

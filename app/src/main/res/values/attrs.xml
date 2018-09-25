@@ -12,5 +12,11 @@
             <enum name="BUTT" value="1"/>
             <enum name="ROUND" value="2"/>
         </attr>
+        <attr name="mStartPosition">
+            <enum name="left" value="180"/>
+            <enum name="top" value="-90"/>
+            <enum name="right" value="0"/>
+            <enum name="bottom" value="90"/>
+        </attr>
     </declare-styleable>
 </resources>

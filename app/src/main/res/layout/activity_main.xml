@@ -31,6 +31,7 @@
         app:mTextColor="#009FDE"
         app:mTextSize="24sp"
         app:mBorderWidth="20dp"
+        app:mStartPosition="top"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
