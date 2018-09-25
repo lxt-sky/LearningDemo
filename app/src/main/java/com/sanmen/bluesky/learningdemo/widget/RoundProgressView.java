@@ -210,14 +210,6 @@ public class RoundProgressView extends View {
     }
 
     /**
-     * 设置圆弧线帽样式,无效
-     * @param cap
-     */
-    public void setStokeCap(Paint.Cap cap){
-        mRadiusPaint.setStrokeCap(cap);
-    }
-
-    /**
      * 设置进度
      * @param progress 进度值
      * @param openAnim 是否开启动画

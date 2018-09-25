@@ -7,11 +7,6 @@
         <attr name="mArcColor" format="color"/>
         <attr name="mTextColor" format="color"/>
         <attr name="mTextSize" format="dimension"/>
-        <attr name="mStokeCap">
-            <enum name="SQUARE" value="0"/>
-            <enum name="BUTT" value="1"/>
-            <enum name="ROUND" value="2"/>
-        </attr>
         <attr name="mStartPosition">
             <enum name="left" value="180"/>
             <enum name="top" value="-90"/>
