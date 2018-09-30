@@ -3,4 +3,12 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+
+    <color name="colorItemSelected">#f0F0efef</color>
+    <color name="colorItemUnSelected">#ffffff</color>
+    <color name="whell_item_bg_select">#efefef</color>
+
+    <color name="colorBtnBlue">#45A2FF</color>
+    <color name="colorBtnWhite">#FFFFFF</color>
+    <color name="colorLineGray">#e8e8e8</color>
 </resources>

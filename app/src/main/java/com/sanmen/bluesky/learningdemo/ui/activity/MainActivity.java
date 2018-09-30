@@ -29,14 +29,13 @@ public class MainActivity extends AppCompatActivity {
         roundProgressView = findViewById(R.id.rpvProgress);
 //        roundProgressView.setStokeCap(Paint.Cap.ROUND);
 
-        roundProgressView.setProgress(25,true);
+        roundProgressView.setProgress(30,true);
         //设置最大进度
 //        roundProgressView.setMaxProgress(80);
-//        roundProgressView.setBaseUnit("S");
+//        roundProgressView.setBaseUnit("fen");
 //        roundProgressView.setBorderWidth(16);
 //        roundProgressView.setTextSize(16);
 //        roundProgressView.setBorderColor(Color.BLUE);
-//        roundProgressView.refresh();
 //        roundProgressView.setStartPosition(RoundProgressView.LEFT);
 
     }

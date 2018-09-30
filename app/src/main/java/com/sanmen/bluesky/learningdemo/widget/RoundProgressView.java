@@ -7,6 +7,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PaintFlagsDrawFilter;
 import android.graphics.RectF;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
@@ -71,7 +72,7 @@ public class RoundProgressView extends View {
 
     private Paint mCenterTextPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
-    private Paint mArcSPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    private Paint mArcPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
     private static final int DEFAULT_BORDER_WIDTH = 10;
 
@@ -112,7 +113,7 @@ public class RoundProgressView extends View {
         mArcColor = typedArray.getColor(R.styleable.RoundProgressView_mArcColor,Color.parseColor("#d50f09"));
         mTextColor = typedArray.getColor(R.styleable.RoundProgressView_mTextColor,Color.parseColor("#d50f09"));
         mTextSize = typedArray.getDimensionPixelSize(R.styleable.RoundProgressView_mTextSize,dip2px(DEFAULT_TEXT_SIZE));
-        mStartPosition =  typedArray.getFloat(R.styleable.RoundProgressView_mStartPosition,-90f);
+        mStartPosition =  typedArray.getFloat(R.styleable.RoundProgressView_mStartPosition,-90.5f);
         typedArray.recycle();
     }
 
@@ -140,13 +141,13 @@ public class RoundProgressView extends View {
         mCenterTextPaint.setAntiAlias(true);
 
 
-        //设置mArcSPaint画笔
-        mArcSPaint.setStyle(Paint.Style.STROKE);
-        mArcSPaint.setColor(mArcColor);
-        mArcSPaint.setAntiAlias(true);
-        mArcSPaint.setStrokeWidth(mBorderWidth);
+        //设置mArcPaint画笔
+        mArcPaint.setStyle(Paint.Style.STROKE);
+        mArcPaint.setColor(mArcColor);
+        mArcPaint.setAntiAlias(true);
+        mArcPaint.setStrokeWidth(mBorderWidth);
         //设置圆弧线帽样式
-//        mArcSPaint.setStrokeCap(Paint.Cap.SQUARE);
+//        mArcPaint.setStrokeCap(Paint.Cap.SQUARE);
     }
 
     @Override
@@ -168,6 +169,9 @@ public class RoundProgressView extends View {
         Paint.FontMetricsInt fm = mCenterTextPaint.getFontMetricsInt();
         //计算文本绘制Y坐标
         int textY =(getHeight()-(fm.descent-fm.ascent))/2-fm.ascent;
+        //设置canvas抗锯齿
+//        PaintFlagsDrawFilter mDrawFilter = new PaintFlagsDrawFilter(0, Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
+//        canvas.setDrawFilter(mDrawFilter);
 
         //矩阵
         RectF oval = new RectF();
@@ -175,6 +179,7 @@ public class RoundProgressView extends View {
         oval.top = centerY-mRingRadius;
         oval.right = centerX+mRingRadius;
         oval.bottom = centerY+mRingRadius;
+
         //外圆环
 //        canvas.drawCircle(radius,radius,mRingRadius,mBorderPaint);
         canvas.drawArc(oval,0f,360f,false,mBorderPaint);
@@ -183,7 +188,7 @@ public class RoundProgressView extends View {
 
         if(mProgress>0){
             //圆弧
-            canvas.drawArc(oval,mStartPosition,((float) mProgress/mTotalProgress)*360f,false,mArcSPaint);
+            canvas.drawArc(oval,mStartPosition,((float) mProgress/mTotalProgress)*360f,false,mArcPaint);
         }
         //中间文字
         canvas.drawText(centerText,textX,textY,mCenterTextPaint);
@@ -231,7 +236,7 @@ public class RoundProgressView extends View {
      */
     public void setMaxProgress(int maxProgress){
         this.mTotalProgress = maxProgress;
-//        invalidate();
+        invalidate();
     }
 
     /**
@@ -240,6 +245,7 @@ public class RoundProgressView extends View {
      */
     public void setBaseUnit(String baseUnit){
         this.mBaseUnit = baseUnit;
+        invalidate();
     }
 
     /**
@@ -248,6 +254,7 @@ public class RoundProgressView extends View {
      */
     public void setTextSize(int size){
         this.mTextSize = dip2px(size);
+        mCenterTextPaint.setTextSize(this.mTextSize);
     }
 
     /**
@@ -256,6 +263,8 @@ public class RoundProgressView extends View {
      */
     public void setBorderWidth(int width){
         this.mBorderWidth = dip2px(width);
+        mBorderPaint.setStrokeWidth(this.mBorderWidth);
+        mArcPaint.setStrokeWidth(this.mBorderWidth);
     }
 
     /**
@@ -264,6 +273,7 @@ public class RoundProgressView extends View {
      */
     public void setBorderColor(@ColorInt int color){
         this.mBorderColor = color;
+        mBorderPaint.setColor(this.mBorderColor);
     }
 
     /**
@@ -272,6 +282,7 @@ public class RoundProgressView extends View {
      */
     public void setRadiusColor(@ColorInt int color){
         this.mRadiusColor = color;
+        mRadiusPaint.setColor(this.mRadiusColor);
     }
 
     /**
@@ -280,6 +291,7 @@ public class RoundProgressView extends View {
      */
     public void setTextColor(@ColorInt int color){
         this.mTextColor = color;
+        mCenterTextPaint.setColor(this.mTextColor);
     }
 
     /**
@@ -288,6 +300,7 @@ public class RoundProgressView extends View {
      */
     public void setArcColor(@ColorInt int color){
         this.mArcColor = color;
+        mArcPaint.setColor(this.mArcColor);
     }
 
     /**
@@ -296,13 +309,7 @@ public class RoundProgressView extends View {
      */
     public void setStartPosition(float position){
         this.mStartPosition = position;
-    }
-
-    /**
-     * 更新
-     */
-    public void refresh(){
-        initVariable();
+        invalidate();
     }
 
     /**
