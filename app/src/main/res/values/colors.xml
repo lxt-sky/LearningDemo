@@ -11,4 +11,5 @@
     <color name="colorBtnBlue">#45A2FF</color>
     <color name="colorBtnWhite">#FFFFFF</color>
     <color name="colorLineGray">#e8e8e8</color>
+    <color name="black33">#333333</color>
 </resources>

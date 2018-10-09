@@ -21,7 +21,7 @@
             android:layout_marginStart="10dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_view_top_left_radius"
+            android:background="@drawable/selector_left_label"
             android:orientation="vertical">
 
             <TextView
@@ -41,7 +41,6 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:text="2018.02.03 21:59"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
         </LinearLayout>
@@ -57,7 +56,7 @@
             android:layout_marginStart="5dp"
             android:layout_marginTop="10dp"
             android:layout_weight="1"
-            android:background="@drawable/shape_view_top_right_radius"
+            android:background="@drawable/selector_right_label"
             android:orientation="vertical">
 
             <TextView
@@ -77,7 +76,6 @@
                 android:layout_marginBottom="10dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginStart="20dp"
-                android:text="2018.03.03 23:00"
                 android:textColor="@android:color/black"
                 android:textSize="14sp" />
         </LinearLayout>
